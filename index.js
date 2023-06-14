@@ -6,8 +6,8 @@ const equalButton = document.querySelector(".equal")
 const operatorsButton = document.querySelectorAll(".operator")
 const numbersButton = document.querySelectorAll(".number")
 
-let topOperand = ""
-let bottomOperand = ""
+let firstNumber = ""
+let secondNumber = ""
 let operator = ""
 
 displayTop.textContent = ""
@@ -26,15 +26,36 @@ operatorsButton.forEach(operator => {
 })
 
 function handleNumber(num) {
-    displayBottom.textContent += num
-    bottomOperand = displayBottom.textContent
+    secondNumber += num
+    displayBottom.textContent = secondNumber
 }
 
 function handleOperator(op) {
-    displayTop.textContent = displayBottom.textContent + "" + op
     operator = op
+    firstNumber = secondNumber
+    displayTop.textContent = firstNumber + "" + op
+    secondNumber = ""
+    displayBottom.textContent = ""
 }
 
+equalButton.addEventListener("click", operate)
+function operate() {
+     firstNumber = Number(firstNumber)
+     secondNumber = Number(secondNumber)
+
+     if (operator === "+") {
+        firstNumber += secondNumber
+     } else if (operator === "-") {
+        firstNumber -= secondNumber
+     } else if (operator === "x") {
+        firstNumber *= secondNumber
+     } else if (operator === "/"){
+        firstNumber /= secondNumber
+     }
+
+     displayTop.textContent = ""
+     displayBottom.textContent = firstNumber
+}
 
 function clearDisplay() {
 
@@ -43,34 +64,3 @@ function clearDisplay() {
 function deleteNumber() {
 
 }
-
-
-function add(num1, num2) {
-    return Number(num1) + Number(num2)
-}
-
-function subtract(num1, num2) {
-    return Number(num1) - Number(num2)
-}
-
-function multiply(num1, num2) {
-    return Number(num1) * Number(num2)
-}
-
-function divide(num1, num2) {
-    return Number(num1) / Number(num2)
-}
-
-function operate(operator, num1, num2) {
-    if (operator === "+") {
-        return add(num1, num2)
-    } else if (operator === "-") {
-        return subtract(num1, num2)
-    } else if (operator === "*") {
-        return multiply(num1, num2)
-    } else if (operator === "/") {
-        return divide(num1, num2)
-    }
-}
-
-// const result = operate(operator, num1, num2)
