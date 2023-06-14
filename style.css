@@ -10,17 +10,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: -3px;
 }
 
-
-/* #5fe7df #6ed0e3 #a4acec #cc9df2 */
 .wrapper {
-    background: linear-gradient(30deg, #5fe7df, #6ed0e3, #a4acec, #cc9df2);
+    background: linear-gradient(30deg, #5fe7df, #6ed0e3, #a5a4ec, #cc9df2);
+    box-shadow: 0 0 50px 10px rgba(0, 0, 0, .5); 
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
 }
 
 .display {
-    color: aliceblue;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -29,12 +29,15 @@ body {
     padding-right: 20px;
 }
 
-.previous-value {
-    font-size: 2.5rem;
-}
-
 .current-value {
     font-size: 1.5rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .75);
+}
+
+.previous-value {
+    font-size: 2.5rem;
+    color: aliceblue;
 }
 
 .button-rows {
@@ -45,12 +48,20 @@ body {
     height: 75px;
     width: 75px;
     cursor: pointer;
+    color: aliceblue;
+    font-family: inherit;
     font-size: 2rem;
-    border: 1px solid rgba(255, 255, 255, .5);
-    background-color: rgba(255, 255, 255, .25);
-    color: rgba(0, 0, 0, .9);
+    font-weight: 300;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, .2);
+    background-color: rgba(0, 0, 0, .1);
 } 
 
 .button-rows > button:hover {
     background-color: rgba(255, 255, 255, .75);
+    color: rgba(0, 0, 0, .9);
+}
+
+.clear, .equal {
+    flex: 1;
 }
