@@ -6,8 +6,8 @@ const equalButton = document.querySelector(".equal")
 const operatorsButton = document.querySelectorAll(".operator")
 const numbersButton = document.querySelectorAll(".number")
 
-let firstNumber = ""
-let secondNumber = ""
+let numberTop = ""
+let numberBottom = ""
 let operator = ""
 
 displayTop.textContent = ""
@@ -26,41 +26,64 @@ operatorsButton.forEach(operator => {
 })
 
 function handleNumber(num) {
-    secondNumber += num
-    displayBottom.textContent = secondNumber
+    if (num === "." && numberBottom.includes(".")) return
+
+    numberBottom += num
+    displayBottom.textContent = numberBottom
 }
 
 function handleOperator(op) {
+    if (numberBottom === "") return
+
+    if (numberTop !== "") {
+        operate()
+    }
+
     operator = op
-    firstNumber = secondNumber
-    displayTop.textContent = firstNumber + "" + op
-    secondNumber = ""
-    displayBottom.textContent = ""
+    numberTop = numberBottom
+    displayTop.textContent = numberTop + "" + op
+    numberBottom = ""
+    displayBottom.textContent = numberBottom
 }
 
 equalButton.addEventListener("click", operate)
 function operate() {
-     firstNumber = Number(firstNumber)
-     secondNumber = Number(secondNumber)
+    let result = ""
+
+     numberTop = Number(numberTop)
+     numberBottom = Number(numberBottom)
+
+    if (isNaN(numberTop) || isNaN(numberBottom)) return
 
      if (operator === "+") {
-        firstNumber += secondNumber
+        result = numberTop + numberBottom
      } else if (operator === "-") {
-        firstNumber -= secondNumber
-     } else if (operator === "x") {
-        firstNumber *= secondNumber
-     } else if (operator === "/"){
-        firstNumber /= secondNumber
+        result = numberTop - numberBottom
+     } else if (operator === "×") {
+        result = numberTop * numberBottom
+     } else if (operator === "÷"){
+        result = numberTop / numberBottom
      }
 
+     numberBottom = result
+     operator = ""
+     numberTop = ""
+     displayBottom.textContent = result
      displayTop.textContent = ""
-     displayBottom.textContent = firstNumber
 }
 
+
+clearButton.addEventListener("click", clearDisplay)
 function clearDisplay() {
-
+    numberTop = ""
+    numberBottom = ""
+    operator = ""
+    displayTop.textContent = ""
+    displayBottom.textContent = ""
 }
 
+delButton.addEventListener("click", deleteNumber)
 function deleteNumber() {
-
+    numberBottom = numberBottom.toString().slice(0, -1)
+    displayBottom.textContent = numberBottom
 }
