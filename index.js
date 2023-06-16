@@ -1,89 +1,100 @@
-let displayTop = document.querySelector(".display-top")
-let displayBottom = document.querySelector(".display-bottom")
-const clearButton = document.querySelector(".clear")
-const delButton = document.querySelector(".delete")
-const equalButton = document.querySelector(".equal")
-const operatorsButton = document.querySelectorAll(".operator")
-const numbersButton = document.querySelectorAll(".number")
+let topDisplay = document.querySelector(".calculator__display-top")
+let bottomDisplay = document.querySelector(".calculator__display-bottom")
+const clearButton = document.querySelector(".calculator__clear")
+const deleteButton = document.querySelector(".calculator__delete")
+const equalButton = document.querySelector(".calculator__equal")
+const operatorButtons = document.querySelectorAll(".calculator__operator")
+const numberButtons = document.querySelectorAll(".calculator__number")
 
-let numberTop = ""
-let numberBottom = ""
-let operator = ""
+// global variables
+let currentTopNumber = ""
+let currentBottomNumber = ""
+let currentOperator = ""
 
-displayTop.textContent = ""
-displayBottom.textContent = ""
+// clear display when initialize 
+topDisplay.textContent = ""
+bottomDisplay.textContent = ""
 
-numbersButton.forEach(number => {
-    number.addEventListener("click", (e) => {
-        handleNumber(e.target.textContent)
+// add click event to number buttons
+numberButtons.forEach(numberButton => {
+    numberButton.addEventListener("click", (e) => {
+        handleNumberClick(e.target.textContent)
     })
 })
 
-operatorsButton.forEach(operator => {
-    operator.addEventListener("click", (e) => {
-        handleOperator(e.target.textContent)
+// add click event to operator buttons
+operatorButtons.forEach(operatorButton => {
+    operatorButton.addEventListener("click", (e) => {
+        handleOperatorClick(e.target.textContent)
     })
 })
 
-function handleNumber(num) {
-    if (num === "." && numberBottom.includes(".")) return
+// function to handle when a number is clicked
+function handleNumberClick(num) {
+    if (num === "." && currentBottomNumber.includes(".")) return
 
-    numberBottom += num
-    displayBottom.textContent = numberBottom
+    currentBottomNumber += num
+    bottomDisplay.textContent = currentBottomNumber
 }
 
-function handleOperator(op) {
-    if (numberBottom === "") return
+// function to handle when an operator is clicked
+function handleOperatorClick(op) {
 
-    if (numberTop !== "") {
-        operate()
+    // check if there is no number in the bottom display
+    if (currentBottomNumber === "") return
+
+    // check if there is already a nunmber in the top display
+    if (currentTopNumber !== "") {
+        performCalculation()
     }
 
-    operator = op
-    numberTop = numberBottom
-    displayTop.textContent = numberTop + "" + op
-    numberBottom = ""
-    displayBottom.textContent = numberBottom
+    // store the current values
+    currentOperator = op
+    currentTopNumber = currentBottomNumber
+
+    // display he current number and operator
+    topDisplay.textContent = currentTopNumber + "" + op
+    currentBottomNumber = ""
+    bottomDisplay.textContent = currentBottomNumber
 }
 
-equalButton.addEventListener("click", operate)
-function operate() {
+equalButton.addEventListener("click", performCalculation)
+function performCalculation() {
     let result = ""
 
-     numberTop = Number(numberTop)
-     numberBottom = Number(numberBottom)
+    currentTopNumber = Number(currentTopNumber)
+    currentBottomNumber = Number(currentBottomNumber)
 
-    if (isNaN(numberTop) || isNaN(numberBottom)) return
+    if (isNaN(currentTopNumber) || isNaN(currentBottomNumber)) return
 
-     if (operator === "+") {
-        result = numberTop + numberBottom
-     } else if (operator === "-") {
-        result = numberTop - numberBottom
-     } else if (operator === "×") {
-        result = numberTop * numberBottom
-     } else if (operator === "÷"){
-        result = numberTop / numberBottom
-     }
+    if (currentOperator === "+") {
+        result = currentTopNumber + currentBottomNumber
+    } else if (currentOperator === "-") {
+        result = currentTopNumber - currentBottomNumber
+    } else if (currentOperator === "×") {
+        result = currentTopNumber * currentBottomNumber
+    } else if (currentOperator === "÷") {
+        result = currentTopNumber / currentBottomNumber
+    }
 
-     numberBottom = result
-     operator = ""
-     numberTop = ""
-     displayBottom.textContent = result
-     displayTop.textContent = ""
+    currentBottomNumber = result
+    currentOperator = ""
+    currentTopNumber = ""
+    bottomDisplay.textContent = result
+    topDisplay.textContent = ""
 }
-
 
 clearButton.addEventListener("click", clearDisplay)
 function clearDisplay() {
-    numberTop = ""
-    numberBottom = ""
-    operator = ""
-    displayTop.textContent = ""
-    displayBottom.textContent = ""
+    currentTopNumber = ""
+    currentBottomNumber = ""
+    currentOperator = ""
+    topDisplay.textContent = ""
+    bottomDisplay.textContent = ""
 }
 
-delButton.addEventListener("click", deleteNumber)
+deleteButton.addEventListener("click", deleteNumber)
 function deleteNumber() {
-    numberBottom = numberBottom.toString().slice(0, -1)
-    displayBottom.textContent = numberBottom
+    currentBottomNumber = currentBottomNumber.toString().slice(0, -1)
+    bottomDisplay.textContent = currentBottomNumber
 }
